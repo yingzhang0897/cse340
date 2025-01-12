@@ -1,4 +1,10 @@
-/******* Change Box Model ***************/
+/* ADDED FOR CONVENIENCE */
+:root {
+  --primary-background: #fff;
+  --main-accent: #01b0d3;
+  --secondary-accent: #000000;
+}
+
 *,
 *:before,
 *:after {
@@ -8,44 +14,86 @@
 body {
   margin: 0;
 }
-
-#wrapper {
-  width: 95%;
-  margin-left: auto;
-  margin-right: auto;
-  padding-bottom: 1em;
+#top-header {
+  margin: 20px auto;
 }
-@media only screen and (min-width: 768px) {
-  body {
-    background-size: 100px 100px;
-    background-position: 0 0, 0 0, -50px -50px, 50px 50px;
-  }
-
-  #wrapper {
-    border-radius: 10px;
-    margin-top: 1rem;
-    padding: 1vw;
-    width: 75vw;
-    max-width: 1200px;
-  }
+#top-header a {
+  text-decoration: none;
+  color: var(--secondary-accent);
 }
-/* ADDED FOR CONVENIENCE */
-:root {
-  --primary-background: #fff;
-  --main-accent: #01b0d3;
-}
-
-body {
-  margin: 0;
-}
-
 #wrapper {
   width: 95%;
   /* Added this to make sure that the background inside the wrapper is always white */
   background-color: var(--primary-background);
-  margin-left: auto;
-  margin-right: auto;
+  margin: 1rem auto;
   padding-bottom: 1em;
+}
+
+#top-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.topnav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--main-accent);
+}
+
+.topnav li {
+  float: none;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.topnav li a {
+  display: block;
+  color: var(--secondary-accent);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+button {
+  background-color: var(--main-accent);
+  border: none;
+  padding: 1rem;
+  font-size: 16px;
+}
+
+#proimage {
+  position: relative;
+}
+
+#problock {
+  position: absolute;
+  background-color: gray;
+}
+
+#protext {
+  position: absolute;
+  top: 0;
+  left: 100;
+  width: 200px;
+  color: var(--main-accent);
+}
+
+#upgrades {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+
+#about-delorean {
+  display: flex;
+  flex-direction: row;
+}
+
+#reviews li {
+  margin: 10px;
 }
 
 @media only screen and (min-width: 768px) {
@@ -63,9 +111,14 @@ body {
   /* This is the blueish border around the desktop version */
     border: 5px solid var(--main-accent);
     border-radius: 10px;
-    margin-top: 1rem;
+    margin: 1rem auto;
     padding: 1vw;
     width: 75vw;
     max-width: 1200px;
   }
+
+  .topnav li {
+    float: left;
+  }
+
 }
