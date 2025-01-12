@@ -4,3 +4,68 @@
 *:after {
   box-sizing: border-box;
 }
+
+body {
+  margin: 0;
+}
+
+#wrapper {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 1em;
+}
+@media only screen and (min-width: 768px) {
+  body {
+    background-size: 100px 100px;
+    background-position: 0 0, 0 0, -50px -50px, 50px 50px;
+  }
+
+  #wrapper {
+    border-radius: 10px;
+    margin-top: 1rem;
+    padding: 1vw;
+    width: 75vw;
+    max-width: 1200px;
+  }
+}
+/* ADDED FOR CONVENIENCE */
+:root {
+  --primary-background: #fff;
+  --main-accent: #01b0d3;
+}
+
+body {
+  margin: 0;
+}
+
+#wrapper {
+  width: 95%;
+  /* Added this to make sure that the background inside the wrapper is always white */
+  background-color: var(--primary-background);
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 1em;
+}
+
+@media only screen and (min-width: 768px) {
+  body {
+  /* You could use a regular image, but went with gradients */
+    background-image: linear-gradient(45deg, #000 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #000 75%),
+    linear-gradient(45deg, transparent 75%, #000 75%),
+    linear-gradient(45deg, #000 25%, #fff 25%);
+    background-size: 100px 100px;
+    background-position: 0 0, 0 0, -50px -50px, 50px 50px;
+  }
+
+  #wrapper {
+  /* This is the blueish border around the desktop version */
+    border: 5px solid var(--main-accent);
+    border-radius: 10px;
+    margin-top: 1rem;
+    padding: 1vw;
+    width: 75vw;
+    max-width: 1200px;
+  }
+}
