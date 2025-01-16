@@ -1,3 +1,7 @@
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Playfair+Display:ital@0;1&display=swap');
+
+
 /* ADDED FOR CONVENIENCE */
 :root {
   --primary-background: #fff;
@@ -14,13 +18,7 @@
 body {
   margin: 0;
 }
-#top-header {
-  margin: 20px auto;
-}
-#top-header a {
-  text-decoration: none;
-  color: var(--secondary-accent);
-}
+
 #wrapper {
   width: 95%;
   /* Added this to make sure that the background inside the wrapper is always white */
@@ -30,8 +28,21 @@ body {
 }
 
 #top-header {
+  font-family: "DM Serif Text", serif;
+  font-weight: 800;
+  font-style: italic;
+  margin: 20px auto;
   display: flex;
   justify-content: space-between;
+}
+
+#top-header a {
+  text-decoration: none;
+  color: var(--secondary-accent);
+}
+
+#top-header a:hover {
+  text-decoration: underline;
 }
 
 .topnav {
@@ -57,6 +68,18 @@ body {
   text-decoration: none;
 }
 
+#proimage {
+  position: relative;
+}
+
+#prowords-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  color: var(--main-accent);
+}
+
 button {
   background-color: var(--main-accent);
   border: none;
@@ -64,24 +87,7 @@ button {
   font-size: 16px;
 }
 
-#proimage {
-  position: relative;
-}
-
-#problock {
-  position: absolute;
-  background-color: gray;
-}
-
-#protext {
-  position: absolute;
-  top: 0;
-  left: 100;
-  width: 200px;
-  color: var(--main-accent);
-}
-
-#upgrades {
+#upgrades-container {
   display: grid;
   grid-template-columns: auto auto;
 }
@@ -89,7 +95,7 @@ button {
 
 #about-delorean {
   display: flex;
-  flex-direction: row;
+  flex-flow: column-reverse nowrap;
 }
 
 #reviews li {
@@ -121,4 +127,8 @@ button {
     float: left;
   }
 
+  #about-delorean {
+    display: flex;
+    flex-flow: row nowrap;
+  }
 }
