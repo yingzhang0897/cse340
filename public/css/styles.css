@@ -127,6 +127,67 @@ button {
   margin: 20px;
   padding: 10px;
 }
+/* for the login form*/
+.form-container {
+  margin: 0 auto;
+  width: 60%;
+}
+form {
+  background-color: var(--primary-background);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(4, 32, 124, 0.3);
+  min-width: 300px;
+}
+form div {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+input {
+  width: 50%;
+  padding: 0.5rem;
+  border: 1px solid var(--secondary-accent);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  width: 50%;
+  padding: 0.75rem;
+  border: none;
+  background-color: var(--main-accent);
+  color: var(--secondary-accent);
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--secondary-accent);
+  color: var(--main-accent);
+}
+
+/* Center the registration link */
+p {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+a {
+  color: var(--secondary-accent);
+  text-decoration: underline;
+}
+
+a:hover {
+  text-decoration: none;
+  background-color: var(--main-accent);
+}
 
 @media only screen and (min-width: 768px) {
   body {
