@@ -1,13 +1,12 @@
 <% if (title) { %>
     <h1><%= title %></h1>
-    <%- messages() %>
 <% } else {
     res.redirect('/')
 } %>
 
-
+<p>All fields are required.</p>
 <div class="form-container">
-    <form action="/account/register" method="post">
+    <form id="registerForm" action="/account/register" method="post">
         <div>
             <label for="account_firstname">First name:</label>
             <input 
@@ -46,11 +45,12 @@
                 name="account_password" 
                 placeholder="Enter your password" 
                 required
-                minlength="12"
-                pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{12,}$"
-                title="Password must be at least 12 characters long, contain at least one uppercase letter, one number, and one special character."
+                pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
             >
-            <button type="button" id="togglePassword">Show Password</button>
+            <div>
+                <i>There must be at least 12 characters, one must be a number, one must be a lowercase letter, one must be a capital letter, and one must be a non-alphanumeric character</i>
+            </div>
+            <button type="button" id="togglePassword">Show Password</button>    
         </div>
                 
         <button type="submit">register</button>

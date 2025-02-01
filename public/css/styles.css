@@ -189,6 +189,16 @@ a:hover {
   background-color: var(--main-accent);
 }
 
+input:required:invalid, input:focus:invalid {
+      border: 2px solid red;
+      background-color: #ffd6d6;
+}
+
+input:required:valid {
+  border: 2px solid green;
+  background-color: #e6ffe6;
+}
+
 @media only screen and (min-width: 768px) {
   body {
   /* You could use a regular image, but went with gradients */
