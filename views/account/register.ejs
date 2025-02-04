@@ -5,11 +5,11 @@
 } %>
 
 <% if (errors) { %>
-    <ul class="notice">
+    <ol class="notice">
    <% errors.array().forEach(error => { %>
      <li><%= error.msg %></li>
 <%  }) %>
-   </ul>
+   </ol>
 <% } %>
 
 <p>All fields are required.</p>
@@ -22,7 +22,7 @@
                 id="account_firstname" 
                 name="account_firstname" 
                 placeholder="Enter your first name" 
-                required>
+                required value="<%= locals.account_firstname %>">
         </div>
 
         <div>
@@ -32,7 +32,7 @@
                 id="account_lastname" 
                 name="account_lastname" 
                 placeholder="Enter your last name" 
-                required>
+                required value="<%= locals.account_lastname %>">
         </div>
 
         <div>
@@ -42,7 +42,7 @@
                 id="account_email" 
                 name="account_email" 
                 placeholder="Enter your email" 
-                required>
+                required value="<%= locals.account_email %>">
         </div>
 
         <div>

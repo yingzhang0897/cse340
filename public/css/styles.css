@@ -198,6 +198,12 @@ input:required:valid {
   border: 2px solid green;
   background-color: #e6ffe6;
 }
+/* error list view*/
+ol.notice{
+  color: red;
+  background-color: var(--primary-background);
+  list-style-type: square;
+}
 
 @media only screen and (min-width: 768px) {
   body {
