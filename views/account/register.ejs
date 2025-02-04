@@ -4,6 +4,13 @@
     res.redirect('/')
 } %>
 
+<% if (errors) { %>
+    <ul class="notice">
+   <% errors.array().forEach(error => { %>
+     <li><%= error.msg %></li>
+<%  }) %>
+   </ul>
+<% } %>
 
 <p>All fields are required.</p>
 <div class="form-container">
