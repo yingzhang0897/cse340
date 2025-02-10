@@ -8,9 +8,8 @@
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts") 
 const env = require("dotenv").config()
-const app = express()
 const bodyParser = require("body-parser")
-
+const cookieParser = require("cookie-parser")
 //Require the Session package and DB connection
 const session = require("express-session")
 const pool = require('./database/')
@@ -22,6 +21,7 @@ const baseController = require("./controllers/baseController")
 const utilities = require("./utilities/")
 const errorRoute = require("./routes/errorRoute")
 
+const app = express()
 
 /* ***********************
  * Middleware
@@ -37,17 +37,22 @@ app.use(session({
   name: 'sessionId',
 }))
 
-// Express Messages Middleware
+// Express Messages Middleware unit 4 activity
 app.use(require('connect-flash')())
 app.use(function(req, res, next){
   res.locals.messages = require('express-messages')(req, res)
   next()
 })
 
-//collect the values from the incoming request body
+//collect the values from the incoming request body, unit4, processing registration activity
 app.use(bodyParser.json()) //use the body parser to work with JSON
 // "extended: true" allows rich objects and arrays to be parsed
 app.use(bodyParser.urlencoded({extended: true}))// for parsing application/x-www-form-urlencoded
+
+//unit 5 login acitivity
+app.use(cookieParser())
+//unit 5 login in process activity
+app.use(utilities.checkJWTToken)
 
 /* ***********************
  * View Engine and Templates
