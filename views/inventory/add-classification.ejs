@@ -1,0 +1,14 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+<% } else {
+    res.redirect('/inv/')
+} %>
+
+
+<form action="/inv/add-classification" method="POST" id="addClassificationForm">
+    <label for="classification_name">Classification Name:</label>
+    <input type="text" id="classification_name" name="classification_name" 
+           pattern="^[A-Za-z+$" placeholder="Newcar" required>
+    <div><i>Name must be alphabetic characters only.</i></div>
+    <button type="submit">Add Classification</button>
+</form>
