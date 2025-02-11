@@ -47,12 +47,12 @@ validate.addVehicleRules = () => {
   return [
     body("inv_make").trim().escape().notEmpty().withMessage("Make name with at least 3 characters is required."),
     body("inv_model").trim().escape().notEmpty().withMessage("Model name with at least 3 characters is required."),
-    body("inv_year").trim().escape().matches('/\d{4}/').withMessage("Year must be a 4-digit number."),
+    body("inv_year").trim().escape().matches(/\d{4}$/).withMessage("Year must be a 4-digit number."),
     body("inv_description").trim().escape().notEmpty().withMessage("Description is required."),
     body("inv_image").trim().escape().notEmpty().withMessage("Image path is required."),
     body("inv_thumbnail").trim().escape().notEmpty().withMessage("Thumbnail path is required."),
-    body("inv_price").trim().escape().matches(/^(?:\d+|\d+\.\d+)$/).withMessage("Price can be integer or decimal."),
-    body("inv_miles").trim().escape().matches(/^\d+(\.\d+)?$/).withMessage("Miles must be a digits only."),
+    body("inv_price").trim().escape().withMessage("Price can be integer or decimal."),
+    body("inv_miles").trim().escape().matches(/^[1-9]\d*$/).withMessage("Miles must be digits only."),
     body("inv_color").trim().escape().notEmpty().withMessage("Color is required.")
   ]
 }
