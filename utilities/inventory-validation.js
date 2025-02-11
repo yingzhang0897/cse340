@@ -67,10 +67,12 @@ validate.checkVehicleData = async (req, res, next) => {
   errors = validationResult(req)
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav()
+    let classificationList = await utilities.buildClassificationList(); 
     res.render("inventory/add-inventory", {
       errors,
       title: "Add Inventory",
       nav,
+      classificationList,
       inv_make,
       inv_model,
       inv_year,
@@ -93,12 +95,12 @@ validate.updateInventoryRules = () => {
   return [
     body("inv_make").trim().escape().notEmpty().withMessage("Make name with at least 3 characters is required."),
     body("inv_model").trim().escape().notEmpty().withMessage("Model name with at least 3 characters is required."),
-    body("inv_year").trim().escape().matches('/\d{4}/').withMessage("Year must be a 4-digit number."),
+    body("inv_year").trim().escape().notEmpty().withMessage("Year must be a 4-digit number."),
     body("inv_description").trim().escape().notEmpty().withMessage("Description is required."),
     body("inv_image").trim().escape().notEmpty().withMessage("Image path is required."),
     body("inv_thumbnail").trim().escape().notEmpty().withMessage("Thumbnail path is required."),
-    body("inv_price").trim().escape().matches(/^(?:\d+|\d+\.\d+)$/).withMessage("Price can be integer or decimal."),
-    body("inv_miles").trim().escape().matches(/^\d+(\.\d+)?$/).withMessage("Miles must be a digits only."),
+    body("inv_price").trim().escape().notEmpty().withMessage("Price can be integer or decimal."),
+    body("inv_miles").trim().escape().notEmpty().withMessage("Miles must be a digits only."),
     body("inv_color").trim().escape().notEmpty().withMessage("Color is required.")
   ]
 }
