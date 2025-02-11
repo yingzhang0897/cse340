@@ -46,7 +46,9 @@
     <input type="text" id="inv_color" name="inv_color"  placeholder="min of 3 characters" value="<%= locals.inv_color %>" required>
 
     <!-- Hidden field to store classification_id -->
-    <input type="hidden" name="classification_id" value="<%= classification_id %>">
+    <input type="hidden" name="classification_id"
+    <% if(locals.classification_id) { %> value="<%= locals.classification_id %>"
+    <% } %>>
 
     <button type="submit">Add Vehicle</button>
 </form>
