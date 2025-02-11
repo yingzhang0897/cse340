@@ -7,7 +7,7 @@ const invCont = {}
  *  Build inventory by classification view
  * ************************** */
 invCont.buildByClassificationId = async function (req, res, next) {
-  const classification_id = req.params.classificationId
+  const classification_id = parseInt(req.params.classificationId)
   const data = await invModel.getInventoryByClassificationId(classification_id)
   const grid = await utilities.buildClassificationGrid(data)
   let nav = await utilities.getNav()
@@ -22,7 +22,7 @@ invCont.buildByClassificationId = async function (req, res, next) {
  *  Build vehicle detail view
  * ************************** */
 invCont.getInventoryDetail = async function (req, res, next) {
-  const inv_id = req.params.invId
+  const inv_id = parseInt(req.params.invId)
   const vehicle = await invModel.getVehicleById(inv_id)
   const flex = await utilities.buildVehicleDetail(vehicle)
   let nav = await utilities.getNav()
@@ -129,7 +129,7 @@ invCont.addVehicle = async function (req, res, next) {
  *  Return Inventory by Classification As JSON week5
  * ************************** */
 invCont.getInventoryJSON = async (req, res, next) => {
-  const classification_id = parseInt(req.params.classification_id)
+  const classification_id = parseInt(req.params.classificationId)
   const invData = await invModel.getInventoryByClassificationId(classification_id)
   if (invData[0].inv_id) {
     return res.json(invData)
@@ -142,7 +142,7 @@ invCont.getInventoryJSON = async (req, res, next) => {
  *  Build edit inventory view week5
  * ************************** */
 invCont.buildEditInventory = async function (req, res, next) {
-  const inv_id = parseInt(req.params.inv_id)
+  const inv_id = parseInt(req.params.invId)
   let nav = await utilities.getNav()
   const itemData = await invModel.getInventoryById(inv_id)
   const classificationSelect = await utilities.buildClassificationList(itemData[0].classification_id)
@@ -231,7 +231,7 @@ invCont.updateInventory = async function (req, res, next) {
  *  Build delete inventory view week5
  * ************************** */
 invCont.buildDeleteInventory = async function (req, res, next) {
-  const inv_id = parseInt(req.params.inv_id)
+  const inv_id = parseInt(req.params.invId)
   let nav = await utilities.getNav()
   const itemData = await invModel.getInventoryById(inv_id)
   const classificationSelect = await utilities.buildClassificationList(itemData[0].classification_id)
