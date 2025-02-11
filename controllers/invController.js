@@ -38,12 +38,9 @@ invCont.getInventoryDetail = async function (req, res, next) {
  * ************************** */
 invCont.invManagement = async function (req, res){
   let nav = await utilities.getNav()
-  const classificationSelect = await utilities.buildClassificationList()
-  req.flash("notice", "This is a test message.")
   res.render("inventory/inventory-management", {
     title: "Inventory Management",
     nav,
-    classificationSelect,
     errors: null,
   })
 }
@@ -51,7 +48,7 @@ invCont.invManagement = async function (req, res){
 /* ***************************
  * Deliver add classification view
  * ************************** */
-async function buildAddClassification(req, res, next) {
+invCont.buildAddClassification = async function (req, res, next) {
     let nav = await utilities.getNav()
     res.render("inventory/add-classification", {
         title: "Add New Classification",
@@ -63,18 +60,18 @@ async function buildAddClassification(req, res, next) {
 /* ***************************
  * Process adding classification
  * ************************** */
-async function addClassification(req, res, next) {
+invCont.addClassification = async function (req, res, next) {
   let { classification_name } = req.body;
 
   try {
       let success = await invModel.insertClassification(classification_name);
 
       if (success) {
-          req.flash("notice", "New classification ${classification_name} added successfully!");
+          req.flash("notice", `New classification ${classification_name} added successfully!`);
           await utilities.updateNav(); // Regenerate the navigation bar
           return res.redirect("/inv");
       } else {
-          req.flash("notice", "Error adding new classification${classification_name}.");
+          req.flash("notice",  `Error adding new classification${classification_name}.`);
           return res.redirect("/inv/add-classification");
       }
   } catch (error) {
@@ -85,21 +82,30 @@ async function addClassification(req, res, next) {
 /* ***************************
  * Deliver add vehicle view
  * ************************** */
-async function buildAddVehicle(req, res, next) {
+invCont.buildAddVehicle = async function (req, res, next) {
   let nav = await utilities.getNav()
-  const classificationSelect = await utilities.buildClassificationList()
+  const classificationList = await utilities.buildClassificationList()
   res.render("inventory/add-inventory", {
       title: "Add New Vehicle",
       nav,
-      classificationSelect,
+      buildClassificationList,
       errors: null,
+      inv_make: "",
+      inv_model: "",
+      inv_year: "",
+      inv_description: "",
+      inv_image: "",
+      inv_thumbnail: "",
+      inv_price: "",
+      inv_miles: "",
+      inv_color: "",
   } ) 
 }
 
 /* ***************************
  * Process adding vehicle
  * ************************** */
-async function addVehicle(req, res, next) {
+invCont.addVehicle = async function (req, res, next) {
   let { inv_make, inv_model, inv_year,  inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, classification_id } = req.body;
 
   try {

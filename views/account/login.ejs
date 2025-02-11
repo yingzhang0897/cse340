@@ -5,6 +5,15 @@
 } %>
 
 <%- messages() %>
+
+<% if (errors) { %>
+<ol class="notice">
+    <% errors.array().forEach(error => { %>
+    <li><%= error.msg %></li>
+    <%  }) %>
+</ol>
+<% } %>
+    
 <div class="form-container">
     <form id="loginForm" action="/account/login" method="post">
         <div>

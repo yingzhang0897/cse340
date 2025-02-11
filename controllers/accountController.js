@@ -11,7 +11,7 @@ async function buildLogin(req, res, next) {
     res.render("account/login", {
         title: "Login",
         nav,
-        errors: null,
+        errors: null, // originally call should not have error
     } ) 
 }
 /* ****************************************
@@ -22,7 +22,7 @@ async function buildRegister(req, res, next) {
     res.render("account/register", {
         title: "Registration",
         nav,
-        errors: null, // validationResult error view
+        errors: null, // originally call should not have error
     })
 }
 
@@ -63,12 +63,14 @@ async function registerAccount(req, res) {
         res.status(201).render("account/login", {
           title: "Login",
           nav,
+          errors: null,
         })
       } else {
         req.flash("notice", "Sorry, the registration failed.")
         res.status(501).render("account/register", {
           title: "Registration",
           nav,
+          errors: null,
         })
       }
     }
@@ -88,7 +90,7 @@ async function loginAccount(req, res) {
       errors: null,
       account_email,
     })
-    return //return control back to the project process
+    return //return control back to the project process, the view does not hang
   }
 
   try {
@@ -126,6 +128,5 @@ async function accountManagement(req, res) {
     throw new error( error. meassage)
   }
 }
-
 
 module.exports = {buildLogin, buildRegister, registerAccount, loginAccount, accountManagement}

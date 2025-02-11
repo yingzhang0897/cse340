@@ -205,6 +205,10 @@ ol.notice{
   list-style-type: square;
 }
 
+/* inventory management view */
+.inventory-management {
+  text-align: center;
+}
 @media only screen and (min-width: 768px) {
   body {
   /* You could use a regular image, but went with gradients */

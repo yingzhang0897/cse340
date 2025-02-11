@@ -1,7 +1,7 @@
 const pool = require("../database/")
 
 /* *****************************
-*   Register new account
+*   Register new account week4
 * *************************** */
 async function registerAccount(account_firstname, account_lastname, account_email, account_password){
     try {
@@ -13,7 +13,7 @@ async function registerAccount(account_firstname, account_lastname, account_emai
   }
 
 /* **********************
- *   Check for existing email
+ *   Check for existing email week4
  * ********************* */
 async function checkExistingEmail(account_email){
   try {

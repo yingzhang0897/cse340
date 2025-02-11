@@ -29,7 +29,7 @@ validate.checkClassificationName = async (req, res, next) => {
     errors = validationResult(req)
     if (!errors.isEmpty()) {
       let nav = await utilities.getNav()
-      res.render("inv/add-classification", {
+      res.render("inventory/add-classification", {
         errors,
         title: "Add Classification",
         nav,
@@ -67,7 +67,7 @@ validate.checkVehicleData = async (req, res, next) => {
   errors = validationResult(req)
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav()
-    res.render("inv/add-inventory", {
+    res.render("inventory/add-inventory", {
       errors,
       title: "Add Inventory",
       nav,
@@ -113,7 +113,7 @@ validate.checkUpdatedVehicleData = async (req, res, next) => {
   errors = validationResult(req)
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav()
-    res.render("inv/update", {
+    res.render("inventory/edit-inventory", {
       errors,
       title: "Edit " + `${inv_make} ${inv_model}`,
       nav,

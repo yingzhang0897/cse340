@@ -93,7 +93,7 @@ Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)
  * unit 5 login process activity
  **************************************** */
 Util.checkJWTToken = (req, res, next) => {
-  if (req.cookie.jwt) {
+  if (req.cookies.jwt) {
     jwt.verify (
       req.cookies.jwt,
       process.env.ACCESS_TOKEN_SECRET,
@@ -117,7 +117,7 @@ Util.checkJWTToken = (req, res, next) => {
  * ************************************ */
 Util.checkLogin = (req, res, next) => {
   if (res.locals.loggedin) {
-    next() //allows the process of the application to continue
+    next() // account management view
   } else {
     req.flash("notice", "Please log in.")
     return res.redirect("/account/login")

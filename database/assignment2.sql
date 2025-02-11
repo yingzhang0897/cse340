@@ -1,6 +1,6 @@
 --query 1: Tony Stark Insert
 INSERT INTO public.account(
-	account_fistname,
+	account_firstname,
 	account_lastname,
 	account_email,
 	account_password

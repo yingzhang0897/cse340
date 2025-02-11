@@ -4,12 +4,14 @@
     res.redirect('/')
 } %>
 
+<%- messages() %>
+
 <% if (errors) { %>
-    <ol class="notice">
-   <% errors.array().forEach(error => { %>
-     <li><%= error.msg %></li>
-<%  }) %>
-   </ol>
+<ol class="notice">
+    <% errors.array().forEach(error => { %>
+    <li><%= error.msg %></li>
+    <%  }) %>
+</ol>
 <% } %>
 
 <p>All fields are required.</p>
@@ -61,7 +63,7 @@
             <button type="button" id="togglePassword">Show Password</button>    
         </div>
                 
-        <button type="submit">register</button>
+        <button type="submit">Register</button>
     </form>
 </div>
 
