@@ -88,7 +88,7 @@ invCont.buildAddVehicle = async function (req, res, next) {
   res.render("inventory/add-inventory", {
       title: "Add New Vehicle",
       nav,
-      buildClassificationList,
+      classificationList,
       errors: null,
       inv_make: "",
       inv_model: "",
@@ -256,13 +256,7 @@ invCont.deleteInventory = async function (req, res, next) {
   let nav = await utilities.getNav()
   const { inv_id } = req.body
    
-  const deleteResult = await invModel.deleteInventory( 
-    inv_id, 
-    inv_make,
-    inv_model,
-    inv_year,
-    inv_price
-  )
+  const deleteResult = await invModel.deleteInventory(inv_id)
 
   if (deleteResult) {
     const itemName = deleteResult.inv_make + " " + deleteResult.inv_model
