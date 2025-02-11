@@ -4,6 +4,15 @@
     res.redirect('/inv/')
 } %>
 
+<%- messages() %>
+
+<% if (errors) { %>
+    <ol class="notice">
+        <% errors.array().forEach(error => { %>
+        <li><%= error.msg %></li>
+        <%  }) %>
+    </ol>
+<% } %>
 
 <form action="/inv/add-classification" method="POST" id="addClassificationForm">
     <label for="classification_name">Classification Name:</label>

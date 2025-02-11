@@ -4,6 +4,16 @@
     res.redirect('/inv/')
 } %>
 
+<%- messages() %>
+
+<% if (errors) { %>
+    <ol class="notice">
+        <% errors.array().forEach(error => { %>
+        <li><%= error.msg %></li>
+        <%  }) %>
+    </ol>
+<% } %>
+
 <form action="/inv/add-inventory" method="POST" id="addInventoryForm">
     <label for="classification_id">Vehicle Classification:</label>
     <%= classificationList %>
