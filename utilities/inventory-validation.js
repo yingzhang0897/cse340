@@ -52,7 +52,7 @@ validate.addVehicleRules = () => {
     body("inv_image").trim().escape().notEmpty().withMessage("Image path is required."),
     body("inv_thumbnail").trim().escape().notEmpty().withMessage("Thumbnail path is required."),
     body("inv_price").trim().escape().isFloat({ min: 0 }).withMessage("Price can be integer or decimal."),
-    body("inv_miles").trim().escape().matches(/^[1-9]\d*$/).withMessage("Miles must be digits only."),
+    body("inv_miles").trim().escape().matches(/^[1-9]\d$*/).withMessage("Miles must be digits only."),
     body("inv_color").trim().escape().notEmpty().withMessage("Color is required.")
   ]
 }
