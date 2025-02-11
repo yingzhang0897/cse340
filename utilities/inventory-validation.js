@@ -14,7 +14,7 @@ validate.addClassificationRules = () => {
         .escape()
         .notEmpty()
         .isLength({ min: 1 })
-        .matches('/^[A-Za-z]+$/')
+        .matches(/^[A-Za-z]+$/)
         .withMessage("Please provide a classification name with only alphabetic characters.") // on error this message is sent.
     ]
 }
@@ -51,8 +51,8 @@ validate.addVehicleRules = () => {
     body("inv_description").trim().escape().notEmpty().withMessage("Description is required."),
     body("inv_image").trim().escape().notEmpty().withMessage("Image path is required."),
     body("inv_thumbnail").trim().escape().notEmpty().withMessage("Thumbnail path is required."),
-    body("inv_price").trim().escape().matches('/^(?:\d+|\d+\.\d+)$/').withMessage("Price can be integer or decimal."),
-    body("inv_miles").trim().escape().matches('/^\d+(\.\d+)?$/').withMessage("Miles must be a digits only."),
+    body("inv_price").trim().escape().matches(/^(?:\d+|\d+\.\d+)$/).withMessage("Price can be integer or decimal."),
+    body("inv_miles").trim().escape().matches(/^\d+(\.\d+)?$/).withMessage("Miles must be a digits only."),
     body("inv_color").trim().escape().notEmpty().withMessage("Color is required.")
   ]
 }
@@ -97,8 +97,8 @@ validate.updateInventoryRules = () => {
     body("inv_description").trim().escape().notEmpty().withMessage("Description is required."),
     body("inv_image").trim().escape().notEmpty().withMessage("Image path is required."),
     body("inv_thumbnail").trim().escape().notEmpty().withMessage("Thumbnail path is required."),
-    body("inv_price").trim().escape().matches('/^(?:\d+|\d+\.\d+)$/').withMessage("Price can be integer or decimal."),
-    body("inv_miles").trim().escape().matches('/^\d+(\.\d+)?$/').withMessage("Miles must be a digits only."),
+    body("inv_price").trim().escape().matches(/^(?:\d+|\d+\.\d+)$/).withMessage("Price can be integer or decimal."),
+    body("inv_miles").trim().escape().matches(/^\d+(\.\d+)?$/).withMessage("Miles must be a digits only."),
     body("inv_color").trim().escape().notEmpty().withMessage("Color is required.")
   ]
 }
