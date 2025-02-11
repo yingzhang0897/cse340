@@ -7,7 +7,7 @@
 
 <form id="updateForm" action="/inv/update-inventory" method="post">
     <label for="classification_id">Vehicle Classification:</label>
-    <%= classificationList %>
+    <%- classificationList %>
 
     <label for="inv_make">Make:</label>
     <input type="text" id="inv_make" name="inv_make" placeholder="min of 3 characters" value="<%= locals.inv_make %>" required>
