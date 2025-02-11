@@ -109,10 +109,10 @@ invCont.addVehicle = async function (req, res, next) {
   let { inv_make, inv_model, inv_year,  inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id } = req.body;
 
   try {
-      let success = await invModel.insertVehicle(inv_make, inv_model, inv_year,  inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id);
+      let success= await invModel.insertVehicle(inv_make, inv_model, inv_year,  inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id);
 
       if (success) {
-          req.flash("notice", "New vehicle added successfully!");
+          req.flash("notice", " New vehicle added successfully!");
           return res.redirect("/inv");
       } else {
           req.flash("notice", "Error adding new vehicle.");

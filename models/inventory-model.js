@@ -45,7 +45,7 @@ async function getVehicleById(inv_id) {
  * ************************** */
 async function insertClassification(classification_name) {
   try {
-      const sql = "INSERT INTO classification (classification_name) VALUES ($1)";
+      const sql = `INSERT INTO classification (classification_name) VALUES ($1)`;
       await pool.query(sql, [classification_name]);
       return true;
   } catch (error) {
@@ -71,7 +71,7 @@ async function insertVehicle(
 ) {
   try {
     const sql =
-      "INSERT INTO public.inventory (inv_make, inv_model , inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)"
+      `INSERT INTO public.inventory (inv_make, inv_model , inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`;
     const data = await pool.query(sql, [
       inv_make,
       inv_model,
@@ -84,10 +84,11 @@ async function insertVehicle(
       inv_color,
       classification_id
     ])
-    return true
+    return true;
+
   } catch (error) {
     console.error("model error: " + error)
-    return false
+    return false;
   }
 }
 
