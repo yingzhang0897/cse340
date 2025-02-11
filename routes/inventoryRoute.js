@@ -36,7 +36,7 @@ router.get("/getInventory/:classificationId", utilities.handleErrors(invControll
 //edit inventory item view week5
 router.get("/edit/:invId", utilities.handleErrors(invController.buildEditInventory));
 // update inventry into database week5
-router.post("/update-inventory/",invValidate.updateInventoryRules(), invValidate.checkUpdatedVehicleData, utilities.handleErrors(invController.updateInventory));
+router.post("/update-inventory",invValidate.updateInventoryRules(), invValidate.checkUpdatedVehicleData, utilities.handleErrors(invController.updateInventory));
 
 //displaying delete confirmation page week5
 router.get("/delete/:invId", utilities.handleErrors(invController.buildDeleteInventory));
