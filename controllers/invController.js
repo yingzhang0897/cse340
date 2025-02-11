@@ -113,7 +113,6 @@ invCont.addVehicle = async function (req, res, next) {
 
       if (success) {
           req.flash("notice", "New vehicle added successfully!");
-          await utilities.updateNav(); // Regenerate the navigation bar
           return res.redirect("/inv");
       } else {
           req.flash("notice", "Error adding new vehicle.");
@@ -201,7 +200,6 @@ invCont.updateInventory = async function (req, res, next) {
   if (updateResult) {
     const itemName = updateResult.inv_make + " " + updateResult.inv_model
     req.flash("notice", `The ${itemName} was successfully updated.`)
-    await utilities.updateNav(); // Regenerate the navigation bar
     res.redirect("/inv/")
   } else {
     const classificationSelect = await utilities.buildClassificationList(classification_id)
@@ -261,7 +259,6 @@ invCont.deleteInventory = async function (req, res, next) {
   if (deleteResult) {
     const itemName = deleteResult.inv_make + " " + deleteResult.inv_model
     req.flash("notice", `The ${itemName} was successfully deleted.`)
-    await utilities.updateNav();  // Regenerate the navigation bar
     res.redirect("/inv/")
   } else {
     const classificationSelect = await utilities.buildClassificationList(classification_id)
