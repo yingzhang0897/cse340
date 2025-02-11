@@ -66,11 +66,12 @@ async function insertVehicle(
   inv_thumbnail,
   inv_price,
   inv_miles,
-  inv_color
+  inv_color,
+  classification_id
 ) {
   try {
     const sql =
-      "INSERT INTO public.inventory (inv_make, inv_model , inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)"
+      "INSERT INTO public.inventory (inv_make, inv_model , inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)"
     const data = await pool.query(sql, [
       inv_make,
       inv_model,
@@ -80,7 +81,8 @@ async function insertVehicle(
       inv_thumbnail,
       inv_price,
       inv_miles,
-      inv_color
+      inv_color,
+      classification_id
     ])
     return true
   } catch (error) {
