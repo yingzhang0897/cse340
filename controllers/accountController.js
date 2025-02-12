@@ -110,22 +110,24 @@ async function loginAccount(req, res) {
 }
 
 /* ****************************************
-*  account management unit 5 to be finished
+*  account management unit 5
 * *************************************** */
 async function accountManagement(req, res) {
-  let nav = await utilities.getNav()
+  let nav = await utilities.getNav();
   try {
-    if(locals.loggedin == 1) {
-      req.flash("notice", "Please check your credentials and try again.")
-      res.status(400).render("account/account-management", {
-        title: "Account Management",
-        nav,
-        errors: null,
-      })
-      return
+    if (!res.locals.loggedin) { // If user is NOT logged in, redirect
+      req.flash("notice", "You must be logged in to access your account.");
+      return res.redirect("/account/login");
     }
-  } catch(error) {
-    throw new error( error. meassage)
+
+    // User is logged in, render the account management page
+    res.render("account/account-management", {
+      title: "Account Management",
+      nav,
+      errors: null,
+    });
+  } catch (error) {
+    throw new Error(error.message); 
   }
 }
 
