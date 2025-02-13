@@ -91,7 +91,7 @@ validate.checkVehicleData = async (req, res, next) => {
 /*  **********************************
 *  Update Vehicle Validation Rules
 * ********************************* */
-validate.updateInventoryRules = () => {
+validate.updateVehicleRules = () => {
   return [
     body("inv_make").trim().escape().notEmpty().withMessage("Make name with at least 3 characters is required."),
     body("inv_model").trim().escape().notEmpty().withMessage("Model name with at least 3 characters is required."),
