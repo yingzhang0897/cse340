@@ -18,6 +18,12 @@ router.post("/login",
     regValidate.checkLoginData,
     utilities.handleErrors(accountController.loginAccount))
 
+//logout
+router.get("/logout", (req, res) => {
+    res.clearCookie("jwt");
+    req.flash("notice", "You have been logged out.");
+    res.redirect("/account/login");
+});
 
 
    
