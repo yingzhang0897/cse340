@@ -40,10 +40,10 @@ async function getAccountByEmail(account_email) {
 async function updateAccountInfo(account_firstname, account_lastname, account_email, account_id) {
   try {
     const sql = `
-      UPDATE accounts 
+      UPDATE public.account
       SET account_firstname = $1, account_lastname = $2, account_email = $3 
       WHERE account_id = $4 RETURNING *`;
-    const data = await pool.query(sql, [first_name, last_name, email, accountId]);
+    const data = await pool.query(sql, [account_firstname, account_lastname, account_email, account_id]);
     return data.rows[0]
   } catch (error) {
     console.error("Database error:", error);
@@ -53,8 +53,8 @@ async function updateAccountInfo(account_firstname, account_lastname, account_em
 async function updatePassword(hashedPassword, account_id) {
   try {
     const sql = `
-      UPDATE accounts 
-      SET password = $1 
+      UPDATE public.account
+      SET account_password = $1 
       WHERE account_id = $2 RETURNING *`;
     const data = await pool.query(sql, [hashedPassword, account_id]);
     return data.rows[0]

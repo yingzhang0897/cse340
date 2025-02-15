@@ -104,6 +104,15 @@ async function loginAccount(req, res) {
       }
       return res.redirect("/account/") //account management view
     }
+    else {
+      req.flash("message notice", "Please check your credentials and try again.")
+      res.status(400).render("account/login", {
+        title: "Login",
+        nav,
+        errors: null,
+        account_email,
+      })
+    }
   } catch (error) {
     return new Error('Access Firbidden')
   }
@@ -184,8 +193,8 @@ async function buildUpdateAccount(req, res) {
 // Process Account Information Update
 async function updateAccountInfo(req, res) {
   try {
-    let { account_firstname, account_lastname, account_email} = req.body;
     let account_id = res.locals.accountData.account_id; //Get ID from logged-in user
+    let { account_firstname, account_lastname, account_email} = req.body;
 
     const updatedAccount = await accountModel.updateAccountInfo(account_firstname, account_lastname, account_email, account_id);
 
@@ -204,12 +213,17 @@ async function updateAccountInfo(req, res) {
 
 async function updatePassword(req, res) {
   try {
-    let {new_password } = req.body;
     let account_id = res.locals.accountData.account_id; //Get ID from logged-in user
-
-      // Hash new password
+    let {new_password, confirm_password } = req.body;
+    
+    if (new_password !== confirm_password) {
+      req.flash("notice", "Passwords do not match.");
+      return res.redirect(`/account/update-password`);
+    }
+    // Hash new password
     const hashedPassword = await bcrypt.hashSync(new_password, 10);
     const updatedPassword = await accountModel.updatePassword(hashedPassword, account_id);
+
     if (updatedPassword) {
       req.flash("notice", "Password updated successfully.");
       return res.redirect("/account/");
