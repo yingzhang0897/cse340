@@ -6,7 +6,14 @@ const regValidate = require("../utilities/account-validation")
 
 router.get("/login",utilities.handleErrors(accountController.buildLogin))
 router.get("/register", utilities.handleErrors(accountController.buildRegister))
-router.get("/", utilities.checkJWTToken, utilities.checkLogin, utilities.handleErrors(accountController.accountManagement))
+//account management 
+router.get("/", utilities.checkJWTToken, utilities.checkLogin, utilities.handleErrors(accountController.buildAccountManagement))
+//update 
+router.get("/update/accountId", utilities.checkJWTToken, utilities.checkLogin, utilities.handleErrors(accountController.buildUpdateAccount))
+//logout
+router.get("/logout", utilities.handleErrors(accountController.logoutAccount))
+
+
 //process registration data
 router.post("/register",
     regValidate.registrationRules(),
@@ -17,14 +24,22 @@ router.post("/login",
     regValidate.loginRules(),
     regValidate.checkLoginData,
     utilities.handleErrors(accountController.loginAccount))
-
-//logout
-router.get("/logout", (req, res) => {
-    res.clearCookie("jwt");
-    req.flash("notice", "You have been logged out.");
-    res.redirect("/account/login");
-});
-
+// Process to Update Account Information
+router.post(
+    "/update",
+    utilities.checkJWTToken,
+    utilities.checkLogin,
+    validate.updateAccountRules(),
+    validate.checkUpdateAccountData,
+    utilities.handleErrors(accountController.updateAccountInfo))
+// Process to Update Password
+router.post(
+    "/update-password",
+    utilities.checkJWTToken,
+    utilities.checkLogin,
+    validate.updatePasswordRules(),
+    validate.checkUpdatePasswordData,
+    utilities.handleErrors(accountController.updatePassword))
 
    
 module.exports = router

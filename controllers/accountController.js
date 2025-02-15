@@ -131,4 +131,90 @@ async function accountManagement(req, res) {
   }
 }
 
-module.exports = {buildLogin, buildRegister, registerAccount, loginAccount, accountManagement}
+async function logoutAccount(req, res) {
+  try {
+    res.clearCookie("jwt"); // Remove JWT authentication token
+    return res.redirect("/"); // Redirect to home page
+  } catch (error) {
+    throw new Error(error.message),
+    res.redirect("/account/");
+  }
+};
+
+async function buildAccountManagement(req, res) {
+  try {
+    let nav = await utilities.getNav()
+    // Ensure user is logged in
+    if (!res.locals.accountData) {
+      req.flash("notice", "Please log in to access your account.");
+      return res.redirect("/account/login");
+    }
+    res.render("account/account-management", {
+      title: "Account Management",
+      nav,
+      accountData: res.locals.accountData // Pass accountData to view
+    });
+  } catch (error) {
+    req.flash("notice", "Server error: " + error.message);
+  }
+}
+
+async function buildUpdateAccount(params) {
+  try {
+    let account_id = parseInt(req.params.accountId)
+    let nav = await utilities.getNav()
+     // Ensure user is logged in
+    if (!res.locals.accountData || res.locals.accountData.account_id !== account_id) {
+    req.flash("notice", "Unauthorized access.");
+    return res.redirect("/account/");
+    }
+    res.render("/account/edit-account", {
+      title: "Update Account",
+      nav,
+      errors: null,
+      accountData: res.locals.accountData // Pass user data to view
+    });
+  } catch (error) {
+    req.flash("notice", "Server error: " + error.message);
+  }
+}
+
+// Process Account Information Update
+async function updateAccountInfo(req, res) {
+  try {
+    let { account_id, account_firstname, account_lastname, account_email} = req.body;
+
+    const updatedAccount = await accountModel.updateAccountInfo(account_firstname, account_lastname, account_email, account_id);
+
+    if (updatedAccount) {
+      req.flash("notice", "Account updated successfully.");
+      return res.redirect("/account/");
+    } else {
+      req.flash("notice", "Update failed.");
+      return res.redirect(`/account/update/${accountId}`);
+    }
+  } catch (error) {
+    req.flash("notice", "Server error: " + error.message);
+  }
+}
+
+async function updatePassword(req, res) {
+  try {
+    let {account_id, new_password } = req.body;
+    new_password = parseInt(new_password);
+      // Hash new password
+    const hashedPassword = await bcrypt.hashSync(new_password, 10);
+    const updatedPassword = await accountModel.updatePassword(hashedPassword, account_id);
+    if (updatedPassword) {
+      req.flash("notice", "Password updated successfully.");
+      return res.redirect("/account/");
+    } else {
+      req.flash("notice", "Password update failed.");
+      return res.redirect(`/account/update/${accountId}`);
+    }
+  } catch (error) {
+    req.flash("notice", "Server error: " + error.message);
+  }
+}
+
+module.exports = {buildLogin, buildRegister, registerAccount, loginAccount, accountManagement,logoutAccount,buildAccountManagement, buildUpdateAccount, updateAccountInfo, updatePassword}

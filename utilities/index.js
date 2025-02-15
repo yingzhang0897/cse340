@@ -150,5 +150,27 @@ Util.updateNav = async function () {
   global.nav = await Util.getNav(); // Regenerate the nav menu
 };
 
+/* ****************************************
+ * Middleware to Check Account Type
+ * Only "Employee" and "Admin" can access restricted views/actions
+ **************************************** */
+Util.checkAccountType = (req, res, next) => {
+  // Check if user is logged in
+  if (!res.locals.accountData) {
+    req.flash("error", "You must be logged in to access this page.");
+    return res.redirect("/account/login");
+  }
+
+  // Extract account type
+  const { account_type } = res.locals.accountData;
+
+  // Allow only Employee or Admin
+  if (account_type === "Employee" || account_type === "Admin") {
+    return next();
+  } else {
+    req.flash("error", "Unauthorized access: Only employees and admins can perform this action.");
+    return res.redirect("/account/login");
+  }
+};
 
 module.exports = Util
