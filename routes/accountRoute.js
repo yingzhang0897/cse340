@@ -29,16 +29,16 @@ router.post(
     "/update",
     utilities.checkJWTToken,
     utilities.checkLogin,
-    validate.updateAccountRules(),
-    validate.checkUpdateAccountData,
+    regValidate.updateAccountRules(),
+    regValidate.checkUpdateAccountData,
     utilities.handleErrors(accountController.updateAccountInfo))
 // Process to Update Password
 router.post(
     "/update-password",
     utilities.checkJWTToken,
     utilities.checkLogin,
-    validate.updatePasswordRules(),
-    validate.checkUpdatePasswordData,
+    regValidate.updatePasswordRules(),
+    regValidate.checkUpdatePasswordData,
     utilities.handleErrors(accountController.updatePassword))
 
    
