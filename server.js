@@ -53,11 +53,6 @@ app.use(bodyParser.urlencoded({extended: true}))// for parsing application/x-www
 app.use(cookieParser())
 //unit 5 login in process activity
 app.use(utilities.checkJWTToken)
-//unit 6 account management 
-app.use((req, res, next) => {
-  res.locals.accountRoute = req.session.accountData || null;
-  next();
-});
 
 /* ***********************
  * View Engine and Templates

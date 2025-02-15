@@ -134,9 +134,10 @@ async function accountManagement(req, res) {
 async function logoutAccount(req, res) {
   try {
     res.clearCookie("jwt"); // Remove JWT authentication token
+    req.flash("notice", "You have been logged out.");
     return res.redirect("/"); // Redirect to home page
   } catch (error) {
-    throw new Error(error.message),
+    req.flash("notice", "Logout failed. Try again.");
     res.redirect("/account/");
   }
 };
@@ -159,7 +160,7 @@ async function buildAccountManagement(req, res) {
   }
 }
 
-async function buildUpdateAccount(params) {
+async function buildUpdateAccount(req, res) {
   try {
     let account_id = parseInt(req.params.accountId)
     let nav = await utilities.getNav()
@@ -168,7 +169,7 @@ async function buildUpdateAccount(params) {
     req.flash("notice", "Unauthorized access.");
     return res.redirect("/account/");
     }
-    res.render("/account/edit-account", {
+    res.render("account/edit-account", {
       title: "Update Account",
       nav,
       errors: null,
@@ -176,13 +177,15 @@ async function buildUpdateAccount(params) {
     });
   } catch (error) {
     req.flash("notice", "Server error: " + error.message);
+    res.redirect("/account/");
   }
 }
 
 // Process Account Information Update
 async function updateAccountInfo(req, res) {
   try {
-    let { account_id, account_firstname, account_lastname, account_email} = req.body;
+    let { account_firstname, account_lastname, account_email} = req.body;
+    let account_id = res.locals.accountData.account_id; //Get ID from logged-in user
 
     const updatedAccount = await accountModel.updateAccountInfo(account_firstname, account_lastname, account_email, account_id);
 
@@ -191,17 +194,19 @@ async function updateAccountInfo(req, res) {
       return res.redirect("/account/");
     } else {
       req.flash("notice", "Update failed.");
-      return res.redirect(`/account/update/${accountId}`);
+      return res.redirect(`/account/update/${account_id}`);
     }
   } catch (error) {
     req.flash("notice", "Server error: " + error.message);
+    res.redirect(`/account/update/${account_id}`);
   }
 }
 
 async function updatePassword(req, res) {
   try {
-    let {account_id, new_password } = req.body;
-    new_password = parseInt(new_password);
+    let {new_password } = req.body;
+    let account_id = res.locals.accountData.account_id; //Get ID from logged-in user
+
       // Hash new password
     const hashedPassword = await bcrypt.hashSync(new_password, 10);
     const updatedPassword = await accountModel.updatePassword(hashedPassword, account_id);
@@ -210,10 +215,11 @@ async function updatePassword(req, res) {
       return res.redirect("/account/");
     } else {
       req.flash("notice", "Password update failed.");
-      return res.redirect(`/account/update/${accountId}`);
+      return res.redirect(`/account/update/${account_id}`);
     }
   } catch (error) {
     req.flash("notice", "Server error: " + error.message);
+    res.redirect(`/account/update/${account_id}`);
   }
 }
 

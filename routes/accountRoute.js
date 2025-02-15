@@ -9,7 +9,7 @@ router.get("/register", utilities.handleErrors(accountController.buildRegister))
 //account management 
 router.get("/", utilities.checkJWTToken, utilities.checkLogin, utilities.handleErrors(accountController.buildAccountManagement))
 //update 
-router.get("/update/accountId", utilities.checkJWTToken, utilities.checkLogin, utilities.handleErrors(accountController.buildUpdateAccount))
+router.get("/update/:accountId", utilities.checkJWTToken, utilities.checkLogin, utilities.handleErrors(accountController.buildUpdateAccount))
 //logout
 router.get("/logout", utilities.handleErrors(accountController.logoutAccount))
 
