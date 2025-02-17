@@ -1,0 +1,29 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+<% } else {
+    res.redirect('/inv/')
+} %>
+
+<%- messages() %>
+<h3>Confirm Deletion - The delete is permanent.</h3>
+
+<form id="deleteForm" action="/account/delete/" method="post">
+
+    <label for="account_firstname" readonly>account_firstname:</label>
+    <input type="text" id="account_firstname" name="account_firstname"  readonly  value="<%= locals.account_firstname %>" required>
+
+    <label for="account_lastname" readonly>account_lastname:</label>
+    <input type="text" id="account_lastname" name="account_lastname"  readonly  value="<%= locals.account_lastname %>" required>
+
+    <label for="account_email" readonly>account_email:</label>
+    <input type="text" id="account_email" name="account_email" readonly  value="<%= locals.account_email %>" required>
+
+    <label for="account_type" readonly>account_type:</label>
+    <input type="text" id="account_type" name="account_type" readonly  value="<%= locals.account_type %>" required>
+
+    <button type="submit">Delete Account</button>
+    <!-- Hidden field to store the inventory ID -->
+    <input type="hidden" name="account_id"
+    <% if(locals.account_id) { %> value="<%= locals.account_id %>"
+    <% } %>>
+</form>

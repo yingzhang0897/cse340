@@ -63,4 +63,50 @@ async function updatePassword(hashedPassword, account_id) {
   }
 }
 
-module.exports = {registerAccount, checkExistingEmail, getAccountByEmail, updateAccountInfo, updatePassword}
+//final enhancement
+async function getAccountsByType(account_type) {
+  try {
+    const sql = `
+      SELECT account_id, account_firstname, account_lastname, account_email, account_type
+      FROM public.account
+      WHERE account_type = $1
+      ORDER BY account_lastname;
+    `;
+    const result = await pool.query(sql, [account_type]);
+
+    return result.rows; // Return array of accounts
+  } catch (error) {
+    console.error("Database error in getAccountsByType:", error);
+    return [];
+  }
+}
+
+/* ***************************
+ *  Delete account
+ * ************************** */
+async function deleteAccount(account_id) {
+  try {
+    const sql = "DELETE FROM public.account WHERE account_id = $1";
+    const data = await pool.query(sql, [account_id])
+  return data
+  } catch (error) {
+    new Error("Delete Account Error: " + error)
+  }
+}
+
+/* **********************
+ *  get accountData by accountID final enhancement
+ * ********************* */
+async function getAccountById(account_id) {
+  try {
+    const result = await pool.query(
+      'SELECT account_id, account_firstname, account_lastname, account_email, account_type, account_password FROM account WHERE account_id = $1', [account_id])
+      return result.rows[0]
+  } catch (error) {
+    return new Error("No matching account_id found")
+  }
+}
+
+
+
+module.exports = {registerAccount, checkExistingEmail, getAccountByEmail, updateAccountInfo, updatePassword, getAccountsByType, deleteAccount, getAccountById}

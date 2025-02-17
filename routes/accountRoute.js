@@ -42,4 +42,26 @@ router.post(
     utilities.handleErrors(accountController.updatePassword))
 
    
+//enhancement route for managing accounts-Admin only
+router.get("/admin", 
+    utilities.checkJWTToken, 
+    utilities.checkAdmin, 
+    utilities.handleErrors(accountController.adminManagement)
+)
+//get accounts JSON by type
+router.get("/getAccounts/:account_type", utilities.checkAccountType, utilities.handleErrors(accountController.getAccountsJSON))
+
+    //delete account view
+router.get("/delete/:accountId",
+    utilities.checkJWTToken, 
+    utilities.checkAdmin, 
+    utilities.handleErrors(accountController.buildDeleteAccount)
+)
+//process deleting account
+router.post("/delete",
+    utilities.checkJWTToken, 
+    utilities.checkAdmin, 
+    utilities.handleErrors(accountController.deleteAccount)
+)
+
 module.exports = router

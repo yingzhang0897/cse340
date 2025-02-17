@@ -237,4 +237,97 @@ async function updatePassword(req, res) {
   }
 }
 
-module.exports = {buildLogin, buildRegister, registerAccount, loginAccount, accountManagement,logoutAccount,buildAccountManagement, buildUpdateAccount, updateAccountInfo, updatePassword}
+/* ***************************
+ *  Return accounts by type As JSON final enhancement
+ * ************************** */
+async function getAccountsJSON(req, res, next) {
+  console.log("Received params:", req.params); // Debugging
+  
+  const account_type = req.params.account_type;
+  if (!account_type) {
+    console.error("Error: account_type is undefined.");
+    return res.status(400).json({ error: "Invalid account type" });
+  }
+
+  try {
+    const accountData = await accountModel.getAccountsByType(account_type);
+    console.log("Fetched account data:", accountData);
+
+    if (!accountData || accountData.length === 0) {
+      return res.status(404).json({ error: "No data found" });
+    }
+
+    return res.json(accountData);
+  } catch (error) {
+    console.error("Database error:", error);
+    next(error);
+  }
+}
+
+
+/* ***************************
+ * Build admin management view 
+ * ************************** */
+async function adminManagement(req, res, next) {
+  try {
+    let nav = await utilities.getNav()
+    const accountTypeList = utilities.buildAccountTypeList()
+    // Ensure user is logged in
+    if (!res.locals.accountData) {
+      req.flash("notice", "Please log in to access your account.");
+      return res.redirect("/account/login");
+    }
+    console.log("Account Type List Generated:", accountTypeList);// debug
+    res.render("account/admin", {
+      title: "Admin Management",
+      nav,
+      accountData: res.locals.accountData,// Pass accountData to view
+      errors: null,
+      accountTypeList: accountTypeList,
+    })
+  } catch (error) {
+    req.flash("notice", "Server error: " + error.message);
+    return res.redirect("/account/");
+  }
+}
+
+/* ***************************
+ *  Build delete account view final enhancement
+ * ************************** */
+async function buildDeleteAccount(req, res, next) {
+ const account_id = parseInt(req.params.accountId)
+ let nav = await utilities.getNav()
+ const accountData = await accountModel.getAccountById(account_id)
+ const accountName = `${accountData.account_firstname} ${accountData.account_lastname}`
+ res.render("account/delete-confirm", {
+  title: "Delete " + accountName,
+  nav,
+  errors: null,
+  account_id: accountData.account_id,
+  account_firstname: accountData.account_firstname,
+  account_lastname: accountData.account_lastname,
+  account_email: accountData.account_email,
+  account_type: accountData.account_type,
+ })
+}
+/* ***************************
+ *  Delete Account Data final enhancement
+ * ************************** */
+async function deleteAccount(req, res, next) {
+  let nav = await utilities.getNav()
+  const account_id = parseInt(req.body.account_id)
+  const accountData = await accountModel.getAccountById(account_id)
+  const accountName = `${accountData.account_firstname} ${accountData.account_lastname}`
+
+  const deleteAccount= await accountModel.deleteAccount(account_id)
+  if (deleteAccount) {
+    req.flash("notice", `${accountName} was successfully deleted.`)
+    res.redirect("account/manage")
+  } else {
+    req.flash("notice", "Sorry, the deletion failed.")
+    res.redirect("account/delete/account_id")
+  }
+
+}
+
+module.exports = {buildLogin, buildRegister, registerAccount, loginAccount, accountManagement,logoutAccount,buildAccountManagement, buildUpdateAccount, updateAccountInfo, updatePassword, getAccountsJSON, adminManagement, buildDeleteAccount, deleteAccount}

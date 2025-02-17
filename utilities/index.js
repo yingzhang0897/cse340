@@ -173,4 +173,52 @@ Util.checkAccountType = (req, res, next) => {
   }
 };
 
+/* ****************************************
+ * Middleware to Check Admin
+ * final enhancement
+ **************************************** */
+Util.checkAdmin = (req, res, next) => {
+  console.log("checkAdmin middleware triggered.");
+  console.log("Session Data:", res.locals.accountData);
+
+  // Check if user is logged in
+  if (!res.locals.accountData) {
+    console.log("Unauthorized: No account data found.");
+    return res.status(403).json({ error: "You must be logged in to access this page." });
+  }
+
+  // Extract account type
+  const { account_type } = res.locals.accountData;
+  console.log("Account Type:", account_type);
+
+  // Allow only Admin
+  if (account_type === "Admin") {
+    console.log("Admin access granted.");
+    return next();
+  }
+
+  console.log("Unauthorized: Insufficient permissions.");
+  return res.status(403).json({ error: "Unauthorized access: Only Admins can perform this action." });
+};
+
+//final enhancement
+Util.buildAccountTypeList = async function (account_type = null) {
+  let accountTypes = ["Client", "Employee", "Admin"]; // Define available types
+  let accountTypeList =
+    '<select name="account_type" id="accountTypeList" required>';
+  accountTypeList += "<option value=''>Choose an Account Type</option>";
+
+  accountTypes.forEach((type) => {
+    accountTypeList += `<option value="${type}"`;
+    if (account_type != null && type == account_type) {
+      accountTypeList += " selected";
+    }
+    accountTypeList += `>${type}</option>`;
+  })
+
+  accountTypeList += "</select>";
+  console.log("Generated accountTypeList HTML:", accountTypeList); // Debugging log
+  return accountTypeList;
+}
+
 module.exports = Util
