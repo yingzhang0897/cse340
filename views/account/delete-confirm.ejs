@@ -7,7 +7,7 @@
 <%- messages() %>
 <h3>Confirm Deletion - The delete is permanent.</h3>
 
-<form id="deleteForm" action="/account/delete/" method="post">
+<form id="deleteForm" action="/account/Admin/delete/" method="post">
 
     <label for="account_firstname" readonly>account_firstname:</label>
     <input type="text" id="account_firstname" name="account_firstname"  readonly  value="<%= locals.account_firstname %>" required>

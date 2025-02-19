@@ -178,27 +178,20 @@ Util.checkAccountType = (req, res, next) => {
  * final enhancement
  **************************************** */
 Util.checkAdmin = (req, res, next) => {
-  console.log("checkAdmin middleware triggered.");
-  console.log("Session Data:", res.locals.accountData);
-
-  // Check if user is logged in
   if (!res.locals.accountData) {
-    console.log("Unauthorized: No account data found.");
-    return res.status(403).json({ error: "You must be logged in to access this page." });
+    req.flash("notice", "You must be logged in to access this page.");
+    return res.redirect("/account/");
   }
-
   // Extract account type
   const { account_type } = res.locals.accountData;
-  console.log("Account Type:", account_type);
-
   // Allow only Admin
   if (account_type === "Admin") {
     console.log("Admin access granted.");
     return next();
+  } else {
+    req.flash("notice", "Unauthorized access: Only Admin can perform this action.");
+    return res.redirect("/account/login");
   }
-
-  console.log("Unauthorized: Insufficient permissions.");
-  return res.status(403).json({ error: "Unauthorized access: Only Admins can perform this action." });
 };
 
 //final enhancement
@@ -221,4 +214,4 @@ Util.buildAccountTypeList = async function (account_type = null) {
   return accountTypeList;
 }
 
-module.exports = Util
+module.exports = Util 

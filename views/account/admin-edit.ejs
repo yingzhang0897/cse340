@@ -1,7 +1,7 @@
 <% if (title) { %>
     <h1><%= title %></h1>
 <% } else {
-    res.redirect('/account/Admin/')
+    res.redirect('/account/Admin')
 } %>
 
 <%- messages() %>
@@ -16,8 +16,8 @@
 
 <main>
     <section class="account-update">
-        <p>Update your account information below.</p>
-        <form action="/account/update" method="POST">
+        <p>Admin, please update account information below.</p>
+        <form action="/account/Admin/update" method="POST">
             <input type="hidden" name="account_id" 
             <% if(locals.account_id) { %> value="<%= locals.account_id %>"
             <% } %>>
@@ -31,19 +31,19 @@
             <label for="account_email">Email:</label>
             <input type="email" name="account_email" id="account_email" value="<%= locals.account_email %>" required>
         
-            <button type="submit">Update Account</button>
+            <button type="submit">Admin Update Account</button>
         </form>        
     </section>
     <hr>
     <section class="password-update">
-        <p>Use the form below to update your password. Your new password must:</p>
+        <p>Admin, please use the form below to update the password. The new password must:</p>
         <ol>
             <li>Be at least 12 characters long</li>
             <li>Include at least one uppercase letter</li>
             <li>Include at least one number</li>
             <li>Include at least one special character</li>
         </ol>
-        <form action="/account/update-password" method="POST">
+        <form action="/account/Admin/update-password" method="POST">
             <input type="hidden" name="account_id" 
             <% if(locals.account_id) { %> value="<%= locals.account_id %>"
             <% } %>>
@@ -60,7 +60,7 @@
                 <button type="button" id="toggleConfirmPassword">Show Password</button>
             </div>
 
-            <button type="submit">Update Password</button>
+            <button type="submit">Admin Update Password</button>
           </form>        
     </section>
 </main>

@@ -43,25 +43,58 @@ router.post(
 
    
 //enhancement route for managing accounts-Admin only
-router.get("/admin", 
+router.get("/Admin", 
     utilities.checkJWTToken, 
+    utilities.checkLogin,
     utilities.checkAdmin, 
     utilities.handleErrors(accountController.adminManagement)
 )
 //get accounts JSON by type
-router.get("/getAccounts/:account_type", utilities.checkAccountType, utilities.handleErrors(accountController.getAccountsJSON))
+router.get("/getAccounts/:account_type",
+    utilities.checkJWTToken,
+    utilities.checkLogin,
+    utilities.checkAdmin, 
+    utilities.handleErrors(accountController.getAccountsJSON))
+//build Admin  update account view
+router.get("/Admin/update/:accountId", 
+    utilities.checkJWTToken, 
+    utilities.checkLogin, 
+    utilities.checkAdmin,
+    utilities.handleErrors(accountController.adminBuildUpdateAccount))
+
+//Admin process updating account info
+router.post(
+    "/Admin/update",
+    utilities.checkJWTToken,
+    utilities.checkLogin,
+    utilities.checkAdmin,
+    regValidate.updateAccountRules(),
+    regValidate.checkUpdateAccountData,
+    utilities.handleErrors(accountController.adminUpdateAccountInfo))
+// Admin process updating password
+router.post(
+    "/Admin/update-password",
+    utilities.checkJWTToken,
+    utilities.checkLogin,
+    utilities.checkAdmin,
+    regValidate.updatePasswordRules(),
+    regValidate.checkUpdatePasswordData,
+    utilities.handleErrors(accountController.adminUpdatePassword))
+
 
     //delete account view
-router.get("/delete/:accountId",
+router.get("/Admin/delete/:accountId",
     utilities.checkJWTToken, 
+    utilities.checkLogin,
     utilities.checkAdmin, 
-    utilities.handleErrors(accountController.buildDeleteAccount)
+    utilities.handleErrors(accountController.adminBuildDeleteAccount)
 )
 //process deleting account
-router.post("/delete",
+router.post("/Admin/delete",
     utilities.checkJWTToken, 
+    utilities.checkLogin,
     utilities.checkAdmin, 
-    utilities.handleErrors(accountController.deleteAccount)
+    utilities.handleErrors(accountController.adminDeleteAccount)
 )
 
 module.exports = router

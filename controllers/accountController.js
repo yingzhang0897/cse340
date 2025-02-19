@@ -171,13 +171,7 @@ async function buildAccountManagement(req, res) {
 
 async function buildUpdateAccount(req, res) {
   try {
-    let account_id = parseInt(req.params.accountId)
     let nav = await utilities.getNav()
-     // Ensure user is logged in
-    if (!res.locals.accountData || res.locals.accountData.account_id !== account_id) {
-    req.flash("notice", "Unauthorized access.");
-    return res.redirect("/account/");
-    }
     res.render("account/edit-account", {
       title: "Update Account",
       nav,
@@ -240,26 +234,20 @@ async function updatePassword(req, res) {
 /* ***************************
  *  Return accounts by type As JSON final enhancement
  * ************************** */
-async function getAccountsJSON(req, res, next) {
-  console.log("Received params:", req.params); // Debugging
-  
+async function getAccountsJSON(req, res, next) {  
   const account_type = req.params.account_type;
   if (!account_type) {
-    console.error("Error: account_type is undefined.");
-    return res.status(400).json({ error: "Invalid account type" });
+    req.flash("notice", "Unauthorized access: Only Admin can perform this action.");
   }
 
   try {
     const accountData = await accountModel.getAccountsByType(account_type);
-    console.log("Fetched account data:", accountData);
-
     if (!accountData || accountData.length === 0) {
-      return res.status(404).json({ error: "No data found" });
+      req.flash("notice", "No data found");
     }
 
     return res.json(accountData);
   } catch (error) {
-    console.error("Database error:", error);
     next(error);
   }
 }
@@ -271,19 +259,18 @@ async function getAccountsJSON(req, res, next) {
 async function adminManagement(req, res, next) {
   try {
     let nav = await utilities.getNav()
-    const accountTypeList = utilities.buildAccountTypeList()
+    const accountTypeList =await utilities.buildAccountTypeList()
     // Ensure user is logged in
     if (!res.locals.accountData) {
-      req.flash("notice", "Please log in to access your account.");
+      req.flash("notice", "Unauthorized access: Only Admin can perform this action.");
       return res.redirect("/account/login");
     }
-    console.log("Account Type List Generated:", accountTypeList);// debug
     res.render("account/admin", {
       title: "Admin Management",
       nav,
       accountData: res.locals.accountData,// Pass accountData to view
       errors: null,
-      accountTypeList: accountTypeList,
+      accountTypeList,
     })
   } catch (error) {
     req.flash("notice", "Server error: " + error.message);
@@ -291,10 +278,85 @@ async function adminManagement(req, res, next) {
   }
 }
 
+//Admin update account view
+async function adminBuildUpdateAccount(req, res) {
+  try {
+    let account_id = parseInt(req.params.accountId)
+    let nav = await utilities.getNav()
+
+    const accountData = await accountModel.getAccountById(account_id)//get the correct account data, not logged-in admin data
+
+    if (!accountData) {
+      req.flash("notice", "Error: Account not found.");
+      return res.redirect("/account/Admin");
+    }
+    res.render("account/admin-edit", {
+      title: "Admin Update Account",
+      nav,
+      errors: null,
+      account_id: accountData.account_id,
+      account_firstname: accountData.account_firstname,
+      account_lastname: accountData.account_lastname,
+      account_email: accountData.account_email,
+    });
+  } catch (error) {
+    req.flash("notice", "Server error: " + error.message);
+    res.redirect("/account/Admin");
+  }
+}
+
+
+// Admin process Account Information Update
+async function adminUpdateAccountInfo(req, res) {
+  try {
+    let { account_id, account_firstname, account_lastname, account_email} = req.body; //Get account_id from Form submission, not from logged-in user
+
+    const updatedAccount = await accountModel.updateAccountInfo(account_firstname, account_lastname, account_email, account_id);
+
+    if (updatedAccount) {
+      req.flash("notice", "Account updated successfully.");
+      return res.redirect("/account/Admin");
+    } else {
+      req.flash("notice", "Update failed.");
+      return res.redirect(`/account/Admin/update/${account_id}`);
+    }
+  } catch (error) {
+    req.flash("notice", "Server error: " + error.message);
+    res.redirect(`/account/Admin/update/${account_id}`);
+  }
+}
+
+// Admin process Password Update
+async function adminUpdatePassword(req, res) {
+  try {
+    let {account_id, new_password, confirm_password } = req.body; //Get account_id from Form submission, not from logged-in user
+
+    if (new_password !== confirm_password) {
+      req.flash("notice", "Passwords do not match.");
+      return res.redirect(`/account/Admin/update-password`);
+    }
+    // Hash new password
+    const hashedPassword = await bcrypt.hashSync(new_password, 10);
+    const updatedPassword = await accountModel.updatePassword(hashedPassword, account_id);
+
+    if (updatedPassword) {
+      req.flash("notice", "Password updated successfully.");
+      return res.redirect("/account/Admin");
+    } else {
+      req.flash("notice", "Password update failed.");
+      return res.redirect(`/account/Admin/update/${account_id}`);
+    }
+  } catch (error) {
+    req.flash("notice", "Server error: " + error.message);
+    res.redirect(`/account/Admin/update/${account_id}`);
+  }
+}
+
+
 /* ***************************
  *  Build delete account view final enhancement
  * ************************** */
-async function buildDeleteAccount(req, res, next) {
+async function adminBuildDeleteAccount(req, res, next) {
  const account_id = parseInt(req.params.accountId)
  let nav = await utilities.getNav()
  const accountData = await accountModel.getAccountById(account_id)
@@ -313,7 +375,7 @@ async function buildDeleteAccount(req, res, next) {
 /* ***************************
  *  Delete Account Data final enhancement
  * ************************** */
-async function deleteAccount(req, res, next) {
+async function adminDeleteAccount(req, res, next) {
   let nav = await utilities.getNav()
   const account_id = parseInt(req.body.account_id)
   const accountData = await accountModel.getAccountById(account_id)
@@ -322,12 +384,12 @@ async function deleteAccount(req, res, next) {
   const deleteAccount= await accountModel.deleteAccount(account_id)
   if (deleteAccount) {
     req.flash("notice", `${accountName} was successfully deleted.`)
-    res.redirect("account/manage")
+    res.redirect("account/Admin")
   } else {
     req.flash("notice", "Sorry, the deletion failed.")
-    res.redirect("account/delete/account_id")
+    res.redirect("account/Admin/delete/account_id")
   }
 
 }
 
-module.exports = {buildLogin, buildRegister, registerAccount, loginAccount, accountManagement,logoutAccount,buildAccountManagement, buildUpdateAccount, updateAccountInfo, updatePassword, getAccountsJSON, adminManagement, buildDeleteAccount, deleteAccount}
+module.exports = {buildLogin, buildRegister, registerAccount, loginAccount, accountManagement,logoutAccount,buildAccountManagement, buildUpdateAccount, updateAccountInfo, updatePassword, getAccountsJSON, adminManagement, adminBuildUpdateAccount, adminUpdateAccountInfo, adminUpdatePassword, adminBuildDeleteAccount, adminDeleteAccount}
