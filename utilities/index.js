@@ -168,7 +168,7 @@ Util.checkAccountType = (req, res, next) => {
   if (account_type === "Employee" || account_type === "Admin") {
     return next();
   } else {
-    req.flash("error", "Unauthorized access: Only employees and admins can perform this action.");
+    req.flash("error", "Unauthorized access: Only Employee and Admin can perform this action.");
     return res.redirect("/account/login");
   }
 };
