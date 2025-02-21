@@ -384,10 +384,10 @@ async function adminDeleteAccount(req, res, next) {
   const deleteAccount= await accountModel.deleteAccount(account_id)
   if (deleteAccount) {
     req.flash("notice", `${accountName} was successfully deleted.`)
-    res.redirect("account/Admin")
+    return res.redirect("/account/Admin")
   } else {
     req.flash("notice", "Sorry, the deletion failed.")
-    res.redirect("account/Admin/delete/account_id")
+    return res.redirect(`/account/Admin/delete/${account_id}`)
   }
 
 }
